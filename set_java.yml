@@ -1,0 +1,5 @@
+---
+- name: java  setup
+  hosts: java-1
+  roles:
+    - { role: role-java }

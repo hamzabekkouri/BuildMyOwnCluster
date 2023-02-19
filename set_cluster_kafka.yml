@@ -1,0 +1,5 @@
+---
+- name: kafka master setup
+  hosts: all
+  roles:
+    - {role: role-kafka }

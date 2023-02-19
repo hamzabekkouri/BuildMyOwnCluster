@@ -1,0 +1,5 @@
+---
+- name: hive setup
+  hosts: masters
+  roles:
+    - {role: role-hive }

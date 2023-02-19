@@ -1,0 +1,16 @@
+---
+kafka:
+  version: 2.11-2.4.1
+  path_copy: /opt
+  install_dir: /opt/kafka
+  kafka_home: /opt/kafka
+  path_copy: /opt
+  log_path: /opt/kafka/logs
+  kafka_log_1: /opt/kafka/logs/kafka-logs-1
+  kafka_log_2: /opt/kafka/logs/kafka-logs-2
+  kafka_log_3: /opt/kafka/logs/kafka-logs-3
+  broker_id_1: 0
+  broker_id_2: 1
+  broker_id_3: 2
+
+zookeeper:

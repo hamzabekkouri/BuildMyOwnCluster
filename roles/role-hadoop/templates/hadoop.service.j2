@@ -1,0 +1,18 @@
+[Unit]
+; General Service Metadata
+Description=Apache hadoop
+Documentation=http://hadoop.apache.org/docs.html
+
+; Dependencies
+After=network.target
+
+[Service]
+Type=forking
+User=hamza
+Group=hamza
+# should format namenode
+ExecStart={{hadoop.install_dir}}/sbin/start-dfs.sh
+ExecStop={{hadoop.install_dir}}/sbin/stop-dfs.sh
+
+[Install]
+WantedBy=multi-user.target

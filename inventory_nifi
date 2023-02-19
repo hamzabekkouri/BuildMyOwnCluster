@@ -1,0 +1,20 @@
+[all:vars]
+ansible_user=hamza
+
+[primary]
+bigdata-1 ansible_sudo_pass="1230" ansible_host=192.168.1.51
+
+
+[nifi-primary:children]
+primary
+
+[nodes]
+bigdata-2 ansible_sudo_pass="1230" ansible_host=192.168.1.52
+bigdata-3 ansible_sudo_pass="1230" ansible_host=192.168.1.53
+
+[nifi-nodes:children]
+nodes
+
+[zookeepers:children]
+primary
+nodes

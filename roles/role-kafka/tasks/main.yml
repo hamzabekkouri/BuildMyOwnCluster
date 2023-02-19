@@ -1,0 +1,127 @@
+---
+- name: set kafka distribution fact
+  set_fact: kafka_path=kafka_{{kafka.version}}
+
+- name: unarchive to the install directory
+  become: true
+  unarchive:
+    src: "{{ kafka.path_copy }}/{{kafka_path}}.tgz"
+    dest: "{{ kafka.path_copy }}"
+    remote_src: yes
+    creates: "{{ kafka.path_copy }}/{{kafka_path}}"
+    owner: hamza
+    group: hamza
+  tags: kafka-node
+
+- name: Create symlink to kafka
+  become: true
+  file:
+    src: "{{kafka.path_copy}}/kafka_{{kafka.version}}"
+    dest: "{{kafka.install_dir}}"
+    owner: hamza
+    group: hamza
+    state: link
+
+- name: change log permission folder
+  become: true
+  file:
+    path: "{{ kafka.log_path }}"
+    owner: hamza
+    group: hamza
+    state: directory
+    mode: '0755'
+
+- name: change log permission folder
+  become: true
+  file:
+    path: "{{item}}"
+    owner: hamza
+    group: hamza
+    state: directory
+    mode: '0755'
+  with_items:
+    - "{{kafka.kafka_log_1}}"
+    - "{{kafka.kafka_log_2}}"
+    - "{{kafka.kafka_log_3}}"
+
+- name: change permissions of kafka folder
+  become: true
+  file:
+    dest: "{{kafka.path_copy}}/kafka_{{kafka.version}}"
+    owner: hamza
+    group: hamza
+    mode: 0755
+    recurse: yes
+
+
+- name: fill server.properties file into machines
+  template:
+    src: "server.properties.1.j2"
+    dest: "{{kafka.install_dir}}/config/server.properties"
+    mode: "0755"
+  when: inventory_hostname in groups['primary']
+
+- name: fill server.properties file into machines
+  template:
+    src: "server.properties.2.j2"
+    dest: "{{kafka.install_dir}}/config/server.properties"
+    mode: "0755"
+  when: inventory_hostname in groups['nodes'][0]
+
+- name: fill server.properties file into machines
+  template:
+    src: "server.properties.3.j2"
+    dest: "{{kafka.install_dir}}/config/server.properties"
+    mode: "0755"
+  when: inventory_hostname in groups['nodes'][1]
+
+- name: fill kafka.service file into machines
+  become: true
+  template:
+    src: "kafka.service.j2"
+    dest: /etc/systemd/system/kafka.service
+    mode: a+x
+
+- name: Add KAFKA_HOME into .bashrc
+  become: true
+  lineinfile:
+    dest: /home/hamza/.bashrc
+    line: 'export KAFKA_HOME={{kafka.kafka_home}}'
+    insertafter: 'EOF'
+    owner: hamza
+    group: hamza
+    state: present
+
+- name: Adding the path in the bashrc files
+  become: true
+  lineinfile:
+    dest: /home/hamza/.bashrc
+    line: 'export PATH=$PATH:$KAFKA_HOME/bin'
+    insertafter: 'EOF'
+    owner: hamza
+    group: hamza
+    state: present
+
+- name: source
+  become: true
+  shell: source /home/hamza/.bashrc
+  args:
+    executable: /bin/bash
+
+- name: enable service kafka and ensure it is not masked
+  become: true
+  systemd:
+    name: kafka
+    enabled: yes
+    masked: no
+
+- name: just force systemd to reread configs (2.4 and above)
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: start kafka
+  become: true
+  systemd:
+    state: started
+    name: kafka

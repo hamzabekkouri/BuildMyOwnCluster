@@ -1,0 +1,10 @@
+[all:vars]
+ansible_user=hamza
+
+[nodes]
+bigdata-1 ansible_sudo_pass="1230" ansible_host=192.168.1.19
+bigdata-2 ansible_sudo_pass="1230" ansible_host=192.168.1.21
+bigdata-3 ansible_sudo_pass="1230" ansible_host=192.168.1.20
+
+[java-nodes:children]
+nodes

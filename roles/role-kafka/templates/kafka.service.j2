@@ -1,0 +1,19 @@
+[Unit]
+Description=kafka master Daemon
+version={{kafka.version}}
+Documentation=http://kafka.apache.org
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory={{kafka.install_dir}}
+User=hamza
+Group=hamza
+ExecStart=/opt/kafka/bin/kafka-server-start.sh -daemon config/server.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh -daemon config/server.properties
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

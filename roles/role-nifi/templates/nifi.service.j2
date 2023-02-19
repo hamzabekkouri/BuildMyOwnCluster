@@ -1,0 +1,18 @@
+[Unit]
+; General Service Metadata
+Description=Apache NiFi
+Documentation=http://nifi.apache.org/docs.html
+
+; Dependencies
+After=network.target
+
+[Service]
+Type=forking
+User=hamza
+Group=hamza
+ExecStart={{nifi.install_dir}}/bin/nifi.sh start
+ExecStop={{nifi.install_dir}}/bin/nifi.sh stop
+ExecRestart={{nifi.install_dir}}/bin/nifi.sh restart
+
+[Install]
+WantedBy=multi-user.target

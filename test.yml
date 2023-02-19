@@ -1,0 +1,7 @@
+
+- hosts: all
+  tasks:
+    - name : print message
+      debug:
+        #msg: "{{hostvars[inventory_hostname]['groups']['nodes'][0]}}"
+        msg: "{{ hostvars[groups['slaves'][0]].inventory_hostname}}"

@@ -1,0 +1,5 @@
+---
+- name: spark master setup
+  hosts: all
+  roles:
+    - {role: role-spark }

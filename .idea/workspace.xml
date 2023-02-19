@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="60521841-7513-4148-9dd8-0e7ed710b06d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/ handlers/main.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/files/start-spark.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/templates/hosts.j2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/templates/slaves.j2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/templates/spark-master.service.j2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/templates/spark-slaves.service.j2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/roles/role-spark/templates/spark_home.sh.j2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/.travis.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/defaults/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/defaults/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/meta/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/meta/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/molecule/default/molecule.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/molecule/default/molecule.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/molecule/default/playbook.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/molecule/default/playbook.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/molecule/default/yaml-lint.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/molecule/default/yaml-lint.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/tasks/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/tasks/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/tasks/setup-Debian.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/tasks/setup-Debian.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/tasks/setup-FreeBSD.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/tasks/setup-FreeBSD.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/tasks/setup-RedHat.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/tasks/setup-RedHat.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/templates/java_home.sh.j2" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/templates/java_home.sh.j2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Debian-10.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Debian-10.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Debian-8.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Debian-8.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Debian-9.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Debian-9.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Fedora.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Fedora.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/FreeBSD.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/FreeBSD.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/RedHat-6.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/RedHat-6.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/RedHat-7.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/RedHat-7.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-12.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-12.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-14.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-14.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-16.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-16.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-18.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-java/vars/Ubuntu-18.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/defaults/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/defaults/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/handlers/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/handlers/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/tasks/main.yml" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/tasks/main.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/templates/spark-defaults-conf.j2" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/templates/spark-defaults-conf.j2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/templates/spark-env-sh.j2" beforeDir="false" afterPath="$PROJECT_DIR$/roles/role-spark/templates/spark-env-sh.j2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/templates/spark-master-systemd.j2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roles/role-spark/templates/spark-worker-systemd.j2" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/roles/role-spark" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1RwMevhcsCCCg1ekg8Vyi9qeHXD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectReloadState">
+    <option name="STATE" value="1" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Ansible" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/roles/role-kafka/templates" />
+    <property name="settings.editor.selected.configurable" value="orchideLicense" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/roles/ansible-role-spark/files" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/roles/role-kafka/templates" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/roles/role-hadoop/tasks" />
+      <recent name="$PROJECT_DIR$/roles/role-hadoop/vars" />
+      <recent name="$PROJECT_DIR$/roles/role-zookeeper/handlers" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="60521841-7513-4148-9dd8-0e7ed710b06d" name="Default Changelist" comment="" />
+      <created>1570573805338</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1570573805338</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2475" y="200" width="800" height="677" key="#Plugins" timestamp="1586029714648">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2475" y="200" width="800" height="677" key="#Plugins/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586029714648" />
+    <state x="2580" y="338" width="675" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586606452989">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2580" y="338" width="675" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586606452989" />
+    <state x="2369" y="174" key="SettingsEditor" timestamp="1586029793222">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2369" y="174" key="SettingsEditor/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586029793222" />
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1594221042318">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="2523" y="362" key="com.intellij.ide.util.TipDialog/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1589817774139" />
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1594221042318" />
+    <state x="2512" y="132" width="736" height="813" key="find.popup" timestamp="1586131834180">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2512" y="132" width="736" height="813" key="find.popup/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586131834180" />
+    <state x="2544" y="246" key="run.anything.popup" timestamp="1586039102773">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2544" y="246" key="run.anything.popup/67.27.1853.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586039102773" />
+  </component>
+</project>

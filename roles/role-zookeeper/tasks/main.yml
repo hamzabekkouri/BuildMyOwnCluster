@@ -1,0 +1,84 @@
+---
+- name: set zookeeper distribution fact
+  set_fact: zookeeper_path=apache-zookeeper-{{zookeeper.version}}-bin
+
+- name: create working directory zookeeper
+  become: true
+  file:
+    path: "{{zookeeper.working_dir}}"
+    state: directory 
+    owner: hamza
+    group: hamza
+    mode: '0755'
+
+- name: unarchive to the install directory
+  become: true
+  unarchive:
+    src: "{{ zookeeper.path_copy }}/{{zookeeper_path}}.tar.gz"
+    dest: "{{ zookeeper.path_copy }}"
+    remote_src: yes
+    owner: hamza
+    group: hamza
+  tags: zookeeper-node
+
+- name: change permissions of zookeeper folder
+  become: true
+  file:
+    dest: "{{zookeeper.path_copy}}/{{zookeeper_path}}"
+    owner: hamza
+    group: hamza
+    mode: 0755
+    recurse: yes
+
+- name: Create symlink to zookeeper
+  become: true
+  file:
+    src: "{{zookeeper.path_copy}}/{{zookeeper_path}}"
+    dest: "{{zookeeper.install_dir}}"
+    owner: hamza
+    group: hamza
+    state: link
+
+- name: config zookeeper
+  template:
+    src: "zoo.cfg.j2"
+    dest: "{{zookeeper.install_dir}}/conf/zoo.cfg"
+    mode: a+x
+
+- name: make id for master
+  shell: "bash -c \"echo '1' > {{zookeeper.working_dir}}/myid\" "
+  when: inventory_hostname in groups['leader'][0]
+
+- name: make id for follower
+  shell: "bash -c \"echo '{{item}}' > {{zookeeper.working_dir}}/myid\" "
+  with_items:
+    - 2
+    - 3
+  when: inventory_hostname in groups['follower'][item-2]
+
+
+- name: add zookeeper to services
+  become: true
+  template:
+    src: "service.zookeeper.j2"
+    dest: /etc/systemd/system/zookeeper.service
+    mode: a+x
+
+- name: enable service zookeeper and ensure it is not masked
+  become: true
+  systemd:
+    name: zookeeper
+    enabled: yes
+    masked: no
+
+- name: just force systemd to reread configs (2.4 and above)
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: start zookeeper
+  become: true
+  systemd:
+    state: started
+    name: zookeeper
+

@@ -1,0 +1,6 @@
+---
+- name: spark master setup
+  hosts: all
+  become : true
+  roles:
+    - {role: ansible-role-java }

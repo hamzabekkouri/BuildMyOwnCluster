@@ -1,0 +1,10 @@
+hive:
+  version: 3.1.2
+  path_copy: /opt 
+  install_dir: /opt/hive
+  log_folder: /opt/hive/logs
+  hive_database: /user/hive/warehouse
+hadoop:
+  hadoop_home: /opt/hadoop
+
+#  address: "{{hostvars[inventory_hostname]['ansible_hostname']}}"

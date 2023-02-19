@@ -1,0 +1,19 @@
+[Unit]
+; General Service Metadata
+Description=Apache yarn
+Documentation=http://yarn.apache.org/docs.html
+
+; Dependencies
+After=network.target
+
+[Service]
+Type=forking
+User=hamza
+Group=hamza
+# should format namenode
+ExecStart={{hadoop.install_dir}}/sbin/start-yarn.sh
+ExecStop={{hadoop.install_dir}}/sbin/stop-yarn.sh
+ExecRestart={{hadoop.install_dir}}/sbin/start-yarn.sh
+
+[Install]
+WantedBy=multi-user.target

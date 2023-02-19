@@ -1,0 +1,201 @@
+---
+- name: set hadoop distribution fact
+  set_fact: hadoop_path=hadoop-{{hadoop.version}}
+
+- name: unarchive to the install directory
+  become: true
+  unarchive:
+    src: "{{ hadoop.path_copy }}/{{hadoop_path}}.tar.gz"
+    dest: "{{ hadoop.path_copy }}"
+    remote_src: yes
+    creates: "{{ hadoop.path_copy }}/{{hadoop_path}}"
+    owner: hamza
+    group: hamza
+  tags: hadoop-node
+
+- name: change permissions of hadoop folder
+  become: true
+  file:
+    dest: "{{hadoop.path_copy}}/hadoop-{{hadoop.version}}"
+    owner: hamza
+    group: hamza
+    mode: "0755"
+    recurse: yes
+
+- name: Create symlink to hadoop
+  become: true
+  file:
+    src: "{{hadoop.path_copy}}/hadoop-{{hadoop.version}}"
+    dest: "{{hadoop.install_dir}}"
+    owner: hamza
+    group: hamza
+    state: link
+
+#- name: create logs hadoop directory
+#  file:
+#    path: "{{hadoop.log_folder}}"
+#    state: directory
+#    owner: hamza
+#    group: hamza
+#    mode: "0755"
+#  tags: log-hadoop-dir
+
+#- name: create hdfs hadoop directory
+#  file:
+#    path: "{{hadoop.hdfs}}"
+#    state: directory
+#    owner: hamza
+#    group: hamza
+#    mode: "0755"
+#  tags: hdfs-dir
+
+#- name: create namenode hadoop directory
+#  file:
+#    path: "{{hadoop.namenode}}"
+#    state: directory
+#    owner: hamza
+#    group: hamza
+#    mode: "0755"
+#  tags: namendoe-dir
+
+#- name: create datanode hadoop directory
+#  file:
+#    path: "{{hadoop.datanode}}"
+#    state: directory
+#    owner: hamza
+#    group: hamza
+#    mode: "0755"
+#  tags: datanode-dir
+
+- name: Add path hadoop into .bashrc
+  become: true
+  lineinfile:
+    dest: /home/hamza/.bashrc
+    line: 'export {{item}}'
+    insertafter: 'EOF'
+    owner: hamza
+    group: hamza
+    state: present
+  with_items:
+    - "HADOOP_HOME={{hadoop.install_dir}}"
+    - "HADOOP_MAPRED_HOME=$HADOOP_HOME"
+    - "HADOOP_COMMON_HOME=$HADOOP_HOME"
+    - "HADOOP_HDFS_HOME=$HADOOP_HOME"
+    - "YARN_HOME=$HADOOP_HOME"
+    - "HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native"
+    - "HADOOP_OPTS=\"-Djava.library.path=$HADOOP_HOME/lib/native\""
+  when: inventory_hostname in groups['masters']
+
+#export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+#export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+- name: Adding the path in the bashrc files
+  become: true
+  lineinfile:
+    dest: /home/hamza/.bashrc
+    line: 'export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin'
+    insertafter: 'EOF'
+    owner: hamza
+    group: hamza
+    state: present
+  when: inventory_hostname in groups['masters']
+
+
+# There are environment settings that will be used by Hadoop, Hive and HADOOP and are shared by both root and the regular user accounts.
+# To centralize these settings I’ve stored them in /etc/profile and created a symbolic link from /root/.bashrc to this file as well.
+# That way all users will have centrally-managed settings.
+
+- name: update hadoop config hadoop-env.sh
+  template:
+    src: "hadoop-env.sh.j2"
+    dest: "{{hadoop.install_dir}}/etc/hadoop/hadoop-env.sh"
+
+
+- name: create hadooptmpdata directory
+  become: true
+  file:
+    path: "{{hadoop.path_copy}}/data/hdata"
+    state: directory
+    owner: hamza
+    group: hamza
+    mode: "0755"
+
+- name: "update core-site.xml"
+  template:
+    dest: "{{hadoop.install_dir}}/etc/hadoop/core-site.xml"
+    src: "core-site.xml.j2"
+
+- name: "update hdfs-site.xml"
+  template:
+    dest: "{{hadoop.install_dir}}/etc/hadoop/hdfs-site.xml"
+    src: "hdfs-site.xml.j2"
+
+- name: "update mapred-site.xml"
+  template:
+    dest: "{{hadoop.install_dir}}/etc/hadoop/mapred-site.xml"
+    src: "mapred-site.xml.j2"
+
+- name: "update yarn-site.xml"
+  template:
+    dest: "{{hadoop.install_dir}}/etc/hadoop/yarn-site.xml"
+    src: "yarn-site.xml.j2"
+
+- name: "add slaves to master configuration"
+  template:
+    dest: "{{hadoop.install_dir}}/etc/hadoop/workers"
+    src: "workers.j2"
+
+- name: fill hadoop.service file into machines
+  become: true
+  template:
+    src: "hadoop.service.j2"
+    dest: /etc/systemd/system/hadoop.service
+    mode: a+x
+  when: inventory_hostname in groups['masters']
+
+- name: fill yarn.service file into machines
+  become: true
+  template:
+    src: "yarn.service.j2"
+    dest: /etc/systemd/system/yarn.service
+    mode: a+x
+  when: inventory_hostname in groups['masters']
+
+- name: just force systemd to reread configs (2.4 and above)
+  become: true
+  run_once: true
+  systemd:
+    daemon_reload: yes
+  when: inventory_hostname in groups['masters']
+
+- name: enable service httpd and ensure it is not masked
+  become: true
+  run_once: true
+  systemd:
+    name: "{{item}}"
+    enabled: yes
+    masked: no
+  with_items:
+    - hadoop
+    - yarn
+  when: inventory_hostname in groups['masters']
+
+- name: Make sure a service is stopped
+  become: true
+  systemd:
+    state: stopped
+    name: "{{item}}"
+  with_items:
+    - yarn
+    - hadoop
+  when: inventory_hostname in groups['masters']
+
+- name: Make sure a service is running
+  become: true
+  systemd:
+    state: started
+    name: "{{item}}"
+  with_items:
+    - yarn
+    - hadoop
+  when: inventory_hostname in groups['masters']

@@ -1,0 +1,18 @@
+[all:vars]
+ansible_user=hamza
+
+[leader]
+bigdata-1 ansible_sudo_pass="1230" ansible_host=192.168.1.51
+
+[zookeepers:children]
+leader
+
+[spark-masters:children]
+leader
+
+[follower]
+bigdata-2 ansible_sudo_pass="1230" ansible_host=192.168.1.52
+bigdata-3 ansible_sudo_pass="1230" ansible_host=192.168.1.53
+
+[spark-workers:children]
+follower

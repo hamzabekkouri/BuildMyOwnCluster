@@ -1,0 +1,5 @@
+---
+- name: nifi master setup
+  hosts: all
+  roles:
+    - {role: role-nifi }

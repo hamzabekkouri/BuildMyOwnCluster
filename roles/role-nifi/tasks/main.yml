@@ -1,0 +1,75 @@
+---
+
+- name: set nifi distribution fact
+  set_fact: nifi_path=nifi-{{nifi.version}}-bin
+
+- name: unarchive to the install directory
+  become: true
+  unarchive:
+    src: "{{ nifi.path_copy }}/{{nifi_path}}.tar.gz"
+    dest: "{{ nifi.path_copy }}"
+    remote_src: yes
+    creates: "{{ nifi.path_copy }}/{{nifi_path}}"
+    owner: hamza
+    group: hamza
+  tags: nifi-node
+
+- name: change permissions of nifi folder
+  become: true
+  file:
+    dest: "{{nifi.path_copy}}/nifi-{{nifi.version}}"
+    owner: hamza
+    group: hamza
+    mode: 0755
+    recurse: yes
+
+- name: Create symlink to nifi
+  become: true
+  file:
+    src: "{{nifi.path_copy}}/nifi-{{nifi.version}}"
+    dest: "{{nifi.install_dir}}"
+    owner: hamza
+    group: hamza
+    state: link
+
+- name: fill nifi.service file into machines
+  become: true
+  template:
+    src: "nifi.service.j2"
+    dest: /etc/systemd/system/nifi.service
+    mode: a+x
+
+- name: fill nifi.properties file into machines
+  template:
+    src: "nifi.properties.j2"
+    dest: "{{nifi.install_dir}}/conf/nifi.properties"
+    mode: "0664"
+
+- name: fill zookeeper.properties file into machines
+  template:
+    src: "zookeeper.properties.j2"
+    dest: "{{nifi.install_dir}}/conf/zookeeper.properties"
+    mode: "0664"
+
+- name: create zookeeper folder at ./state
+  file:
+    path: "{{nifi.install_dir}}/state/zookeeper"
+    state: directory
+    mode: '0755'
+
+- name: make id on zookeeper in nifi on primary
+  shell: "bash -c \"echo '1' > {{nifi.install_dir}}/state/zookeeper/myid\" "
+  when: inventory_hostname in groups['primary'][0]
+
+- name: make id on zookeeper in nifi on nodes
+  shell: "bash -c \"echo '{{item}}' > {{nifi.install_dir}}/state/zookeeper/myid\" "
+  with_items:
+    - 2
+    - 3
+  when: inventory_hostname in groups['nodes'][item-2]
+
+- name: start nifi
+  become: true
+  systemd:
+    state: started
+    name: nifi

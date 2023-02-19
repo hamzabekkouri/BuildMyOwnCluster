@@ -1,0 +1,7 @@
+zookeeper:
+  version: 3.5.7
+  working_dir: /opt/data/zookeeper
+  install_dir: /opt/zookeeper
+  path_copy: /opt
+  tickTime: 2000
+  port: 2181

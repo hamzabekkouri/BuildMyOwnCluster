@@ -1,0 +1,17 @@
+---
+
+nifi:
+  version: 1.11.3
+  temp_dir: /tmp
+  path_copy: /opt
+  install_dir: /opt/nifi
+  nifi_home: /opt/nifi
+  nifi_port: 8090
+
+nifi_cluster:
+  is_node: true
+  node_address: "{{hostvars[inventory_hostname]['ansible_hostname']}}"
+  node_port: 9090
+
+zookeeper:
+  zk_dir: /opt/data/zookeeper

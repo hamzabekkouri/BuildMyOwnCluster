@@ -1,0 +1,96 @@
+---
+- name: set hive distribution fact
+  set_fact: hive_path=apache-hive-{{hive.version}}-bin
+
+- name: unarchive to the install directory
+  become: true
+  unarchive:
+    src: "{{ hive.path_copy }}/{{hive_path}}.tar.gz"
+    dest: "{{ hive.path_copy }}"
+    remote_src: yes
+    creates: "{{ hive.path_copy }}/{{hive_path}}"
+    owner: hamza
+    group: hamza
+  tags: hive-node
+
+- name: change permissions of hive folder
+  become: true
+  file:
+    dest: "{{hive.path_copy}}/apache-hive-{{hive.version}}-bin"
+    owner: hamza
+    group: hamza
+    mode: "0755"
+    recurse: yes
+
+- name: Create symlink to hadoop
+  become: true
+  file:
+    src: "{{hive.path_copy}}/apache-hive-{{hive.version}}-bin"
+    dest: "{{hive.install_dir}}"
+    owner: hamza
+    group: hamza
+    state: link
+
+- name: Add HIVE_HOME into .bashrc
+  become: true
+  lineinfile:
+    dest: /home/hamza/.bashrc
+    line: 'export HIVE_HOME={{hive.install_dir}}'
+    insertafter: 'EOF'
+    owner: hamza
+    group: hamza
+    state: present
+
+- name: Adding the path in the bashrc files
+  become: true
+  lineinfile:
+    dest: /home/hamza/.bashrc
+    line: 'export PATH=$PATH:$HIVE_HOME/bin'
+    insertafter: 'EOF'
+    owner: hamza
+    group: hamza
+    state: present
+
+- name: source
+  become: true
+  shell: "source /home/hamza/.bashrc"
+  args:
+    executable: /bin/bash
+
+- name: update hive config hive-config.sh
+  template:
+    src: "hive-config.sh.j2"
+    dest: "{{hive.install_dir}}/bin/hive-config.sh"
+
+- name: update hive config hive-site.xml
+  template:
+    src: "hive-site.xml.j2"
+    dest: "{{hive.install_dir}}/conf/hive-site.xml"
+
+# - name : Create /tmp directory into HDFS
+# shell : hdfs dfs -mkdir /tmp
+# args:
+#    executable: /bin/bash
+
+#- name : Add write and execute permissions to tmp group members
+#  become_user: hamza
+# shell: "hdfs dfs -chmod g+w /tmp"
+#  args:
+#  executable: /bin/bash
+
+#- name : Create the warehouse directory within the /user/hive/ parent directory
+ # shell: "hdfs dfs -mkdir -p /user/hive/warehouse"
+ # args:
+ #   executable: /bin/bash
+
+#- name : Add write and execute permissions to warehouse group members
+#  shell: "hdfs dfs -chmod g+w /user/hive/warehouse"
+#  args:
+#    executable: /bin/bash
+
+# Fix guava Incompatibility Error in Hive (change guava from hadoop to hive) /opt/hive/lib # /opt/hadoop/share/..
+
+#- name : Initiate the Derby database
+#  shell: "{{install_dir}}/bin/schematool –initSchema –dbType derby"
+#  args:
+#    executable: /bin/bash
